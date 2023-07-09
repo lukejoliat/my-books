@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
     previewFeatures = ["jsonProtocol"]
 }
 
@@ -15,4 +15,30 @@ model Example {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model Book {
+    id        String     @id @default(cuid())
+    name      String
+    author    String
+    favorites Favorite[]
+}
+
+model User {
+    id        String     @id @default(cuid())
+    name      String
+    age       Int?
+    favorites Favorite[]
+}
+
+model Favorite {
+    userId     String
+    bookId     String // relation scalar field (used in the `@relation` attribute above)
+    assignedAt DateTime @default(now())
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+    @@id([userId, bookId])
+    @@index([userId])
+    @@index([bookId])
 }
