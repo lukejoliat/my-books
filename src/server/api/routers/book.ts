@@ -12,4 +12,16 @@ export const bookRouter = createTRPCRouter({
       }
     });
   }),
+  getOne: publicProcedure.input(z.object({ id: z.string() })).query(({ input, ctx }) => {
+    return ctx.prisma.book.findUnique({
+      where: {
+        id: input.id
+      },
+      select: {
+        id: true,
+        name: true,
+        author: true,
+      }
+    })
+  })
 });

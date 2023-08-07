@@ -26,6 +26,7 @@ model Book {
 
 model User {
     id        String     @id @default(cuid())
+    username  String?    @unique
     name      String
     age       Int?
     favorites Favorite[]
